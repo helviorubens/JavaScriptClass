@@ -1,6 +1,5 @@
-// Seção 4 - Aula 59: Entendendo o Hoisting
-
 /**
+ * Seção 4 - Aula 59: Entendendo o Hoisting
  * DEFINIÇÃO: hoisting é o comportamento padrão de mover as declarações para o topo.
  * - Pode gerar alguns efeitos estranhos, como declarar uma variável antes que ela seja atribuída a algun valor.
  */
