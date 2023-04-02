@@ -1,6 +1,7 @@
 /**
  * CLOSURES
  * Source: https://medium.com/dailyjs/i-never-understood-javascript-closures-9663703368e8
+ * Definition: The closure is a collection of all the variables in scope at the time of creation of the function.
  */
 
 // A variável 'a' é definida globalmente com valor '3'
