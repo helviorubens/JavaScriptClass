@@ -19,4 +19,21 @@ function testeLet(){
 }
 
 testeVar() // Ocorre o hoisting "içamento" da variável definida apenas depois
-testeLet() // Retorna erro, pois não é possível "içar"/acessar a variável
+//testeLet() // Retorna erro, pois não é possível "içar"/acessar a variável
+
+// Classes não possuem hoisting, diferentemente de funções
+
+const NodeJS = new Livro("Primeiros passoa com NodeJS", "Casa do Código", 195)
+NodeJS.anunciarTitulo() // retorna erro, pois 'Livro' ainda não foi definido, ou seja, não possui hoisting
+
+class Livro {
+    constructor(nome, editora, paginas) {
+        this.nome = nome
+        this.editora = editora
+        this.paginas = paginas
+    }
+
+    anunciarTitulo() {
+        console.log(`Títuo: ${this.nome}`)
+    }
+}
