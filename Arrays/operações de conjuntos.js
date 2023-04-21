@@ -1,66 +1,67 @@
 // Fonte: https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
 
-arrA = [1, 2, 3]
+arrA = [1, 2, 3, 5]
 arrB = [2, 3]
 arrC = [2, 3, 4]
 
+console.log('\n////////// CONJUNTOS')
+console.log('A :', arrA)
+console.log('B :', arrB)
+console.log('C :', arrC)
+
 /** INTERSEÇÃO
- * Retorna apenas os itens que são comuns a ambos os arrays, independente da posição na iteração
+ * Retorna os itens que são comuns a ambos os conjuntos.
  */
+console.log('\n////////// INTERSEÇÃO')
 
-// Interseção de A com B
-//// [1, 2, 3] - [2, 3] -> ['2', '3']
+// Interseção entre A e B
 const intersectionAB = arrA.filter(x => arrB.includes(x))
-console.log('interseção A - B', intersectionAB)
+console.log('A & B =>', intersectionAB)
 
-// Interseção de B com A
-//// [1, 2, 3] - [2, 3] -> ['2', '3']
+// Interseção entre B e A
 const intersectionBA = arrB.filter(x => arrA.includes(x))
-console.log('interseção B - A', intersectionBA) // ['2', '3']
+console.log('B & A =>', intersectionBA)
 
-/** DIFERENÇA
- * Retorna os itens que NÃO não comuns a ambos os arrays, porém pode ser fortemente dependente da posição na iteração
- */
+// Interseção entre A e C
+const intersectionAC = arrA.filter(x => arrC.includes(x))
+console.log('A & C =>', intersectionAC)
 
 /** DIFERENÇA À DIREITA
- * Apenas os itens diferentes à direta do array inicial são retornados. Possui forte dependência da posição na iteração.
+ * Retorna apenas os itens que pertencem ao conjunto I e que NÃO pertencem ao conjunto II.
  */
+console.log('\n////////// DIFERENÇA À DIREITA')
 
-// Diferença de A para B
-//// [1, 2, 3] \ [2, 3] -> [1]
+// Diferença de A em relação a B
 const differenceAB = arrA.filter(x => !arrB.includes(x))
-console.log('diferença A - B', differenceAB)
+console.log('A \\ B =>', differenceAB)
 
-// Diferença de B para A
-//// [2, 3] \ [1, 2, 3] -> [ ]
+// Diferença de B em relação a A
 const differenceBA = arrB.filter(x => !arrA.includes(x))
-console.log('diferença B - A', differenceBA)
+console.log('B \\ A =>', differenceBA)
 
-// Elementos diferentes à esquerda serão ignorados
-//// [1, 2, 3] \ [2, 3, 4] -> [1]
-const differenceLeft = arrA.filter(x => !arrC.includes(x))
-console.log('diferença ESQ', differenceLeft)
+// Diferença de A em relação a C
+const differenceAC = arrA.filter(x => !arrC.includes(x))
+console.log('A \\ C =>', differenceAC)
 
 /** DIFERENÇA SIMÉTRICA
- * Os itens diferentes à direta e à esquerda do array inicial são retornados.
+ * Retorna TODOS os itens que NÃO são comuns entre os arrays, independente da posição do array inicial.
  */
+console.log('\n////////// DIFERENÇA SIMÉTRICA')
 
-// Independe da posição dos arrays
-//// [1, 2, 3] /\ [2, 3] -> [1]
+// Diferença entre A e B
 const symmetricAB = arrA
                  .filter(x => !arrB.includes(x))
                  .concat(arrB.filter(x => !arrA.includes(x)));
-console.log('dif. simétrica A - B', symmetricAB)
+console.log("A /\\ B =>", symmetricAB)
 
-//// [2, 3] /\ [1, 2, 3] -> [1]
+// Diferença entre B e A
 const symmetricBA = arrB
                  .filter(x => !arrA.includes(x))
                  .concat(arrA.filter(x => !arrB.includes(x)));
-console.log('dif. simétrica B - A', symmetricBA)
+console.log('B /\\ A =>', symmetricBA)
 
-// Identifica os itens diferentes à direita e à esquerda
-//// [1, 2, 3] /\ [2, 3, 4] -> [1, 4]
-const symmetricLeft = arrA
+// Diferença entre A e C
+const symmetricAC = arrA
                  .filter(x => !arrC.includes(x))
                  .concat(arrC.filter(x => !arrA.includes(x)));
-console.log('dif. simétrica ESQ', symmetricLeft)
+console.log('A /\\ C =>', symmetricAC)
