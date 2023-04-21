@@ -17,8 +17,9 @@
 } */
 
 let APPLE = new function () {
+    const fruit = 'melon'
     this.getInfo = function (type, color) {
-        return color + ' ' + type + ' apple'
+        return color + ' ' + type + ' ' + fruit
     }
 }
 
