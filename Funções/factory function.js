@@ -2,31 +2,54 @@
  * FACTORY FUNCTION
  * 
  * Uma factory function permite criar vários objetos sem precisar duplicar vários objetos manualmente.
+ * Referências:
+ *    - https://www.youtube.com/watch?v=arAz2Ff8s88
  */
 
-let person1 = {
-    firstName: 'Hélvio', // propriedade
-    lastName: 'Albuquerque', // propriedade
-    getFullName() { // método
-        return this.firstName + ' ' + this.lastName
-    }
-}
+
+
+////////////////// Objeto literal, sem possibilidade de criar novas instâncias
+
+// let person1 = {
+//     firstName: 'Hélvio',
+//     lastName: 'Albuquerque',
+//     getFullName() {
+//         return this.firstName + ' ' + this.lastName
+//     }
+// }
 
 //console.log(person1.getFullName())
 
+////////////////// Factory function para lidar com a criação do objeto
 
-function createPerson(firstName, lastName) {
+function createPersonV1(firstName, lastName) {
     return {
         firstName,
         lastName,
         getFullName() {
-            return firstName + ' ' + lastName
+            return console.log(firstName + ' ' + lastName);
         }
     }
 }
 
-const person_1 = createPerson('Hélvio', 'Albuquerque')
-const person_2 = createPerson('Maria', 'José')
+function createPersonV2(firstName, lastName) {
+  // Membros privados
+  const lastNameUpper = lastName.toUpperCase();
+  function getFullName() {
+    return console.log(`${lastNameUpper}, ${firstName}`);
+  }
 
-console.log(person_1.getFullName())
-console.log(person_2.getFullName())
+  // Membros públicos
+  // -> "lastNameUpper" está encapsulado apenas no contexto da factory, não sendo exposto fora dela.
+  return {
+    firstName,
+    lastName,
+    getFullName
+  }
+}
+
+const personV1 = createPersonV1('Hélvio', 'Albuquerque');
+const personV2 = createPersonV2('Hélvio', 'Albuquerque');
+
+personV1.getFullName();
+personV2.getFullName();
