@@ -6,8 +6,6 @@
  *    - https://www.youtube.com/watch?v=arAz2Ff8s88
  */
 
-
-
 ////////////////// Objeto literal, sem possibilidade de criar novas instâncias
 
 // let person1 = {
