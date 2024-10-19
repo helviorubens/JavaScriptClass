@@ -1,3 +1,7 @@
+/**
+ * HERANÇA SIMPLES COM Object.create()
+ */
+
 // Objeto base
 const person = {
   name: 'John Doe',
