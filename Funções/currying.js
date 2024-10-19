@@ -1,8 +1,12 @@
 /**
- * COMO USAR O CURRYING
+ * COMO USAR O CURRYING (ou FUNÇÃO PARCIAL)
+ * 
+ * Quando usar:
+ *  - Ao chamar a mesma função e passando os mesmos argumentos
  * 
  * Referências:
  *  - https://www.youtube.com/watch?v=hyHqeuyDOk4
+ *  - "Padrões JavaScript", Stoyan Stefanov
  */
 
 // PROBLEMA: necessidade de criar múltiplas variáveis para cada compra
