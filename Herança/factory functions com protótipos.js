@@ -1,3 +1,8 @@
+/**
+ * USAR FACTORY FUNCTION COM PROTÓTIPOS
+ * Referência: https://www.youtube.com/watch?v=n4B5xX_uYyc
+ */
+
 const volkswagenProto = {
   logCarInfo () {
     console.log(`Volkswagen ${this.name}, cor ${this.color}.`)
