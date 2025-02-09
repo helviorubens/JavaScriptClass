@@ -30,7 +30,9 @@ function pesquisaBinariaComIndiceOriginal(listaComIndices, item) {
 // Exemplo de uso:
 const frutas = ["banana", "abacaxi", "laranja", "manga", "morango"];
 
-const listaOrdenadaComIndices = criarListaOrdenadaComIndicesOriginais(frutas);
+// Criar isso apenas uma vez, aumenta a performance, porque não vai ser necessário fazer a ordenação toda vez que ocorrer uma busca.
+// Para a ordenação temos O(n log n), portanto, é indicado fazer isso uma única vez, já que a busca é O(log n).
+const listaOrdenadaComIndices = criarListaOrdenadaComIndicesOriginais(frutas); 
 
 console.log(pesquisaBinariaComIndiceOriginal(listaOrdenadaComIndices, "laranja")); // Saída: 2 (índice original de "laranja")
 console.log(pesquisaBinariaComIndiceOriginal(listaOrdenadaComIndices, "abacaxi")); // Saída: 1 (índice original de "abacaxi")
