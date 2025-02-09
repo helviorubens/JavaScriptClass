@@ -68,30 +68,40 @@ function baseValidators() {
 }
 
 // REGRAS GERAIS DE VALIDAÇÃO PARA OS TIPOS
-function createValidator(type, options={}) {
+function validatorFactory(){
   const base = baseValidators();
 
-  switch(type) {
-    case 'string':
-      return (value) => base.isString(value) && (!options.required || base.isNotEmptyString(value));
-    case 'number':
-      return (value) => base.isNumber(value) && (!options.positive || base.isPositiveNumber(value));
-    case 'array':
-      return (value) => base.isArray(value) && (!options.nonEmpty || base.isNonEmptyArray(value));
-    case 'object':
-      return (value) => base.isObject(value) && (!options.requiredKeys || base.hasRequiredKeys(value, options.requiredKeys));
-    default:
-      throw new Error(`Tipo de validação não suportado: ${type}`);
+  function createValidator(type, options={}) {
+    const base = baseValidators();
+  
+    switch(type) {
+      case 'string':
+        return (value) => base.isString(value) && (!options.required || base.isNotEmptyString(value));
+      case 'number':
+        return (value) => base.isNumber(value) && (!options.positive || base.isPositiveNumber(value));
+      case 'array':
+        return (value) => base.isArray(value) && (!options.nonEmpty || base.isNonEmptyArray(value));
+      case 'object':
+        return (value) => base.isObject(value) && (!options.requiredKeys || base.hasRequiredKeys(value, options.requiredKeys));
+      default:
+        throw new Error(`Tipo de validação não suportado: ${type}`);
+    }
+  }
+
+  return {
+    createValidator,
   }
 }
 
 // REGRAS DE VALIDAÇÃO DOS TIPOS PARA 'USER'
 function userValidator() {
-  const validateName = createValidator('string', {required: true});
-  const validateAge = createValidator('number', {positive: true});
-  const validateHobbies = createValidator('array', {nonEmpty: true});
-  // const validateDebts = createValidator('number');
-  const validateUserObject = createValidator('object', {requiredKeys: ['name', 'age', 'hobbies']});
+  const factory = validatorFactory();
+
+  const validateName = factory.createValidator('string', {required: true});
+  const validateAge = factory.createValidator('number', {positive: true});
+  const validateHobbies = factory.createValidator('array', {nonEmpty: true});
+  // const validateDebts = factory.createValidator('number');
+  const validateUserObject = factory.createValidator('object', {requiredKeys: ['name', 'age', 'hobbies']});
 
   return {
     validateName,
