@@ -1,3 +1,11 @@
+const ERROR_MESSAGES = {
+  INVALID_NAME: 'O nome do usuário é inválido ou está vazio.',
+  INVALID_AGE:  'A idade informada não é um número positivo',
+  INVALID_HOBBIES: 'A lista de hobbies não pode estar vazia',
+  INVALID_DATE: 'A data de criação é inválida ou está vazia',
+  INVALID_OBJECT: 'O objeto do usuário não contém todas as chaves obrigatórias'
+}
+
 // MANIPULA OS TIPOS DIRETAMENTE DE FORMA EFICIENTE E REPLICÁVEL
 function createTypeHandler() {
   const typeValidators = new Map();
@@ -25,6 +33,7 @@ function createTypeHandler() {
   registerValidator('number', (value) => getType(value) === 'number' && !isNaN(value));
   registerValidator('array', (value) => getType(value) === 'array');
   registerValidator('object', (value) => getType(value) === 'object' && value !== null);
+  registerValidator('date', (value) => getType(value) === 'date' && !isNaN(value));
 
   return {
     isType: isType,
@@ -33,7 +42,7 @@ function createTypeHandler() {
   };
 }
 
-// FACILITA A CRIAÇÃO DOS TIPOS PRIMITIVOS E PERSONALIZADOS
+// FACILITA A CRIAÇÃO DOS TIPOS PRIMITIVOS E PERSONALIZADOS - validações de tipos básicos
 function baseValidators() {
   const typeHandler = createTypeHandler();
 
@@ -55,6 +64,9 @@ function baseValidators() {
     return requiredKeys.every(key => key in value);
   }
 
+  const isDate = (value) => typeHandler.isType('date', value);
+  const isDateNotInFuture = (value) => isDate(value) && value <= new Date();
+
   return {
     isString: isString,
     isNotEmptyString: isNotEmptyString,
@@ -64,10 +76,12 @@ function baseValidators() {
     isNonEmptyArray: isNonEmptyArray,
     isObject: isObject,
     hasRequiredKeys: hasRequiredKeys,
+    isDate: isDate,
+    isDateNotInFuture: isDateNotInFuture,
   };
 }
 
-// REGRAS GERAIS DE VALIDAÇÃO PARA OS TIPOS
+// REGRAS GERAIS DE VALIDAÇÃO PARA OS TIPOS - lógica de validação
 function validatorFactory(){
   const base = baseValidators();
 
@@ -81,6 +95,8 @@ function validatorFactory(){
         return (value) => base.isArray(value) && (!options.nonEmpty || base.isNonEmptyArray(value));
       case 'object':
         return (value) => base.isObject(value) && (!options.requiredKeys || base.hasRequiredKeys(value, options.requiredKeys));
+      case 'date':
+        return (value) => base.isDate(value) && (!options.notInFuture || base.isDateNotInFuture(value));
       default:
         throw new Error(`Tipo de validação não suportado: ${type}`);
     }
@@ -91,7 +107,7 @@ function validatorFactory(){
   }
 }
 
-// REGRAS DE VALIDAÇÃO DOS TIPOS PARA 'USER'
+// REGRAS DE VALIDAÇÃO DOS TIPOS PARA 'USER' - regras específicas
 function userValidator() {
   const factory = validatorFactory();
 
@@ -99,14 +115,16 @@ function userValidator() {
   const validateAge = factory.createValidator('number', {positive: true});
   const validateHobbies = factory.createValidator('array', {nonEmpty: true});
   // const validateDebts = factory.createValidator('number');
+  const validateCreatedAt = factory.createValidator('date', {notInFuture: true});
   const validateUserObject = factory.createValidator('object', {requiredKeys: ['name', 'age', 'hobbies']});
 
   return {
-    validateName,
-    validateAge,
-    validateHobbies,
-    // validateDebts,
-    validateUserObject,
+    validateName: validateName,
+    validateAge: validateAge,
+    validateHobbies: validateHobbies,
+    // validateDebts: validateDebts,
+    validateCreatedAt: validateCreatedAt,
+    validateUserObject: validateUserObject,
   };
 }
 
@@ -115,27 +133,34 @@ function validateUser(user) {
   const validator = userValidator();
 
   if(!validator.validateUserObject(user)) {
-    console.error(`A idade é um dado obrigatório e não foi informado!`);
+    console.error(ERROR_MESSAGES.INVALID_OBJECT);
     return false;
   }
 
   if(!validator.validateName(user.name)) {
+    console.error(ERROR_MESSAGES.INVALID_NAME);
     return false;
   }
 
   if(!validator.validateAge(user.age)) {
-    console.error(`A idade foi informada com valor não permitido: ${user.age}`);
+    console.error(ERROR_MESSAGES.INVALID_AGE);
     return false;
   }
 
   if(!validator.validateHobbies(user.hobbies)) {
+    console.error(ERROR_MESSAGES.INVALID_HOBBIES);
     return false;
   }
-
+  
   // if(!validator.validateDebts(user.debts)) {
   //   console.error(`O valor da dívida foi informado com valor não permitido: ${user.debts}`);
   //   return false;
   // }
+
+  if(!validator.validateCreatedAt(user.createdAt)) {
+    console.error(ERROR_MESSAGES.INVALID_DATE);
+    return false;
+  }
 
   return true;
 }
@@ -146,6 +171,7 @@ const user = {
   age: 33,
   hobbies: ['ler', 'ouvir podcast', 'codificar em JS'],
   // debts: -300.25,
+  createdAt: new Date('2023-10-01'),
 };
 
 console.log(user);
