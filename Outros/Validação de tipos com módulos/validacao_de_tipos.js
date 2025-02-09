@@ -72,8 +72,6 @@ function validatorFactory(){
   const base = baseValidators();
 
   function createValidator(type, options={}) {
-    const base = baseValidators();
-  
     switch(type) {
       case 'string':
         return (value) => base.isString(value) && (!options.required || base.isNotEmptyString(value));
