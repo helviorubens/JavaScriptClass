@@ -1,9 +1,13 @@
-function pesquisaBinariaComIndiceOriginal(lista, item) {
+function criarListaOrdenadaComIndicesOriginais(lista) {
   const listaComIndices = lista.map((valor, indice) => ({valor, indice})); // cria um array de objetos
   console.log("listaComIndices", listaComIndices)
 
   listaComIndices.sort((a, b) => a.valor.localeCompare(b.valor));
 
+  return listaComIndices
+}
+
+function pesquisaBinariaComIndiceOriginal(listaComIndices, item) {
   let baixo = 0;
   let alto = listaComIndices.length - 1;
   
@@ -26,6 +30,8 @@ function pesquisaBinariaComIndiceOriginal(lista, item) {
 // Exemplo de uso:
 const frutas = ["banana", "abacaxi", "laranja", "manga", "morango"];
 
-console.log(pesquisaBinariaComIndiceOriginal(frutas, "laranja")); // Saída: 2 (índice original de "laranja")
-console.log(pesquisaBinariaComIndiceOriginal(frutas, "abacaxi")); // Saída: 1 (índice original de "abacaxi")
-console.log(pesquisaBinariaComIndiceOriginal(frutas, "uva")); // Saída: -1 (valor não encontrado)
+const listaOrdenadaComIndices = criarListaOrdenadaComIndicesOriginais(frutas);
+
+console.log(pesquisaBinariaComIndiceOriginal(listaOrdenadaComIndices, "laranja")); // Saída: 2 (índice original de "laranja")
+console.log(pesquisaBinariaComIndiceOriginal(listaOrdenadaComIndices, "abacaxi")); // Saída: 1 (índice original de "abacaxi")
+console.log(pesquisaBinariaComIndiceOriginal(listaOrdenadaComIndices, "uva")); // Saída: -1 (valor não encontrado)
